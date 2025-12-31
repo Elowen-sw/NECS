@@ -139,7 +139,7 @@ systemctl restart snmpd
 ```
 
 - 通过web ui添加linux2进入snmp主机
-![pic1](中职/02.Server/01.Linux/cacti/pics/1.png)
+![pic1](01.中职/02.Server/01.Linux/cacti/pics/1.png)
 
 - 添加完成后可以在manager中查看Linux2主机状态为"UP"
-![pic2](中职/02.Server/01.Linux/cacti/pics/2.png)
+![pic2](01.中职/02.Server/01.Linux/cacti/pics/2.png)

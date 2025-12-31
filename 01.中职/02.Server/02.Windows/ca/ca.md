@@ -9,8 +9,8 @@
 
 #### 创建计算机证书模板，命名为“ComputerTemplate”，配置该证书颁发方式为手动审批。
 - 修改证书模版配置
-![p2](中职/02.Server/02.Windows/ca/2022_公开卷1/pics/p2.png)
+![p2](01.中职/02.Server/02.Windows/ca/2022_公开卷1/pics/p2.png)
 - 证书申请完成后需要到主CA的证书颁发机构进行手动证书颁发
 - 证书手动颁发之后不会立即进入MMC中计算机个人证书库中，需要到证书颁发机构中导出证书，再导入MMC中
 - 导出颁发的证书如下图：
-![p2](中职/02.Server/02.Windows/ca/2022_公开卷1/pics/p3.png)
+![p2](01.中职/02.Server/02.Windows/ca/2022_公开卷1/pics/p3.png)

@@ -1,7 +1,7 @@
 #### 2022年国赛真题
 - 利用 BGP MPLS VPN 技术，RT1 与 RT2 以太链路间运行多协议标签交换、标签分发协议。RT1 与 RT2 间创建财务 VPN 实例，名为CW，RT1 的 RD 值为 1:1，export rt 值为 1:2，import rt 值为 2:1；RT2 的 RD 值为 2:2。通过两端 loopback1建立 VPN 邻居，分别实现两端 loopback5 ipv4 互通和 ipv6 互通。
 - 拓扑图
-![pics](中职/01.Network/MPLSv4v6/pics/1.png)
+![pics](01.中职/01.Network/MPLSv4v6/pics/1.png)
 ```shell
 #R1配置
 RT1#show run

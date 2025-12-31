@@ -16,7 +16,7 @@
     - NAPT-PT也叫做重载，指多对一源地址转换，是v6向v4的单向访问，不能反过来访问v6
 
 - 实验拓扑
-![pic](中职/01.Network/natpt/pics/1.png)
+![pic](01.中职/01.Network/natpt/pics/1.png)
 
 - 实验环境基本配置
 ```shell

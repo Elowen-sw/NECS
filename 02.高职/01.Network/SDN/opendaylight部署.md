@@ -9,7 +9,7 @@
   ```  
   - 使用 Mininet 和 OpenVswitch 构建拓扑，连接 ODL 的 6653 端口如下
 拓扑结构：
-![pic0](../SDN/pics/0.png)
+![pic0](0.png)
 - 在浏览器上可以访问 ODL 管理页面查看网元拓扑结构；
   - 通过 OVS 给 S2 下发流表，使得 H2 与 H1、H3 无法互通；
   - H1 启动 HTTP-Server 功能，WEB 端口为 8080，H3 作为 HTTP-Client，获取 H1 的 html 网页配置文件。
@@ -74,10 +74,10 @@ feature:install odl-l2switch-switch-ui
 feature:install odl-mdsal-apidocs
 feature:install odl-dluxapps-applications
 ```
-![pic1](../SDN/pics/1.png)
+![pic1](02.高职/01.Network/SDN/pics/1.png)
 - 接下来就可以通过WEB页面访问了。如果不在一个网段或者防火墙没有关闭是访问不到的。
 访问地址：http://192.168.1.100:8181/index.html （这里的IP地址要改成对应服务器的地址）。如果没有错误应访问到如下页面，账号密码都是admin。
-![pic2](../SDN/pics/2.png)
+![pic2](02.高职/01.Network/SDN/pics/2.png)
 
 #### 使用mininet生成拓扑图并连接opendaylight控制器
 ```shell
@@ -86,13 +86,13 @@ mn --controller=remote,ip=192.168.1.100,port=6633 --topo=linear,3
 pingall  #生成流表
 ```
 - 如果mininet和上述命令输入运行成功，在OpenDayLight的WEB界面查看TOPO出现下面界面
-![pic3](../SDN/pics/3.png)
+![pic3](3.png)
 
 #### 测试openvswitch是否安装成功
 ```shell
 ovs-vsctl show
 ```
-![pic4](../SDN/pics/4.png)
+![pic4](4.png)
 
 
 #### 清空mininet拓扑图
