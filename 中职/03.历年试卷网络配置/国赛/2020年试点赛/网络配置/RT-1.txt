@@ -1,0 +1,164 @@
+RT-1_config#show run
+Building configuration...
+
+Current configuration:
+!
+hostname RT-1
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+isdn switch-type basic-5ess
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+interface Loopback1
+ ip address 10.40.255.4 255.255.255.255
+!
+interface Loopback2
+ ip address 10.40.255.5 255.255.255.255
+!
+interface GigaEthernet0/0
+ ip address 10.40.254.18 255.255.255.252
+ ip ospf cost 50
+!
+interface GigaEthernet0/1
+ ip address 10.40.254.9 255.255.255.252
+!
+interface GigaEthernet0/2
+ ip address 10.40.254.13 255.255.255.252
+!
+interface GigaEthernet0/3
+ ip address 10.40.254.37 255.255.255.252
+!
+interface Serial1/0
+ ip address 10.40.254.29 255.255.255.252
+ physical-layer speed 2048000
+!
+interface Serial1/1
+ ip address 10.40.254.33 255.255.255.252
+ physical-layer speed 2048000
+!
+!
+!
+!
+!
+!
+router ospf 1
+ network 10.40.254.16 255.255.255.252 area 0
+ network 10.40.254.8 255.255.255.252 area 0
+ network 10.40.254.12 255.255.255.252 area 0
+ network 10.40.255.4 255.255.255.255 area 0
+ redistribute ospf 2
+ redistribute connect route-map lyl1
+ redistribute bgp 62020 route-map lyl2
+
+router ospf 2
+ network 10.40.254.36 255.255.255.252 area 20
+ network 10.40.255.5 255.255.255.255 area 20
+ default-information originate always
+ redistribute connect route-map lyl3
+ redistribute ospf 1 route-map lyl3
+
+!
+!
+!
+router bgp 62020
+ no synchronization
+ bgp log-neighbor-changes
+ bgp dampening
+ network 172.40.21.0/24
+ neighbor 10.40.254.30 remote-as 62021 
+ neighbor 10.40.254.30 ebgp-multihop 255
+ neighbor 10.40.254.30 default-originate
+ neighbor 10.40.254.30 route-map fw in
+ neighbor 10.40.254.34 remote-as 62021 
+ neighbor 10.40.254.34 ebgp-multihop 255
+ neighbor 10.40.254.34 default-originate
+ neighbor 10.40.254.34 route-map rl in
+ neighbor 10.40.255.1 remote-as 62020 
+ neighbor 10.40.255.1 update-source Loopback1
+ neighbor 10.40.255.1 next-hop-self
+ neighbor 10.40.255.2 remote-as 62020 
+ neighbor 10.40.255.2 update-source Loopback1
+ neighbor 10.40.255.2 next-hop-self
+!
+!
+ 
+ip route 172.40.21.0 255.255.255.0 10.40.254.38 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+!
+!
+ip access-list standard acl1
+ permit 10.40.254.36 255.255.255.252 sequence 10
+!
+ip access-list standard acl2
+ permit 172.40.101.0 255.255.255.0 sequence 10
+!
+ip access-list standard acl3
+ permit 10.40.255.1 255.255.255.255 sequence 10
+ permit 10.40.255.2 255.255.255.255 sequence 20
+ permit 10.40.255.3 255.255.255.255 sequence 30
+ permit 10.40.255.4 255.255.255.255 sequence 40
+!
+!
+route-map lyl1 10 permit
+ match ip address acl1
+!
+route-map lyl2 10 permit
+ match ip address acl2
+!
+route-map lyl3 10 permit
+ match ip address acl3
+!
+route-map rl 20 permit
+ match ip address prefix-list rl
+ set local-preference 200
+!
+route-map fw 10 permit
+ match ip address prefix-list fw
+ set local-preference 200
+!
+route-map fw 20 permit
+!
+ip prefix-list fw seq 5 permit 172.40.30.0/24
+ip prefix-list rl seq 5 permit 172.40.101.0/24
+ip prefix-list rl seq 10 permit 172.40.20.0/24
+ip prefix-list rl seq 15 permit 172.40.50.0/24
+

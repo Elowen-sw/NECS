@@ -1,0 +1,271 @@
+SW1#show run
+!!
+switch convert mode stand-alone
+!!
+!
+no service password-encryption
+!
+hostname SW1
+sysLocation China
+sysContact 400-810-9119
+!
+authentication logging enable
+banner login wowowo
+!
+username admin privilege 15 password 0 admin
+!
+!
+!
+!
+info-center logfile 4 config count 40960 nandflash logfile.log
+info-center logfile 4 output-enable
+info-center logfile 4 match level warnings 
+snmp-server enable
+snmp-server user DCN20202 DCN authPriv 3des af8bf881f8df85a993b0e53e2f24fb1c auth md5 484df5a836aee26114c7223fc79912ec
+snmp-server group DCN authpriv read Dcn2020_R write DCn2020_W
+snmp-server host 2001:10:40:50::121 v3 authpriv DCN2020
+snmp-server host 10.40.50.120 v3 authpriv DCN2020
+!
+!
+!
+!
+lldp enable
+lldp msgTxHold 5
+lldp tx-interval 300
+!
+!
+!
+Interface Ethernet0
+!
+loopback-detection interval-time 30 30
+!
+!
+!
+port-group 1
+!
+vlan 1;10;20;30;40;50;1000-1001;4000 
+!
+vlan 4093-4094 
+!         
+ip access-list standard bgp
+  permit 172.40.20.0 0.0.0.255
+  permit 172.40.21.0 0.0.0.255
+  permit 172.40.30.0 0.0.0.255
+  permit 172.40.50.0 0.0.0.255
+  permit 172.40.101.0 0.0.0.255
+  exit
+!
+Interface Ethernet1/0/1
+ switchport access vlan 10
+!
+Interface Ethernet1/0/2
+ switchport access vlan 10
+!
+Interface Ethernet1/0/3
+ switchport access vlan 10
+!
+Interface Ethernet1/0/4
+ switchport access vlan 10
+!
+Interface Ethernet1/0/5
+ switchport access vlan 20
+!
+Interface Ethernet1/0/6
+ switchport access vlan 20
+!
+Interface Ethernet1/0/7
+ switchport access vlan 20
+!
+Interface Ethernet1/0/8
+ switchport access vlan 30
+ loopback-detection specified-vlan 30
+ loopback-detection control shutdown
+!
+Interface Ethernet1/0/9
+ switchport access vlan 30
+ loopback-detection specified-vlan 30
+ loopback-detection control shutdown
+!
+Interface Ethernet1/0/10
+ switchport access vlan 30
+ loopback-detection specified-vlan 30
+ loopback-detection control shutdown
+!
+Interface Ethernet1/0/11
+ switchport access vlan 40
+!
+Interface Ethernet1/0/12
+ switchport access vlan 40
+!
+Interface Ethernet1/0/13
+ switchport access vlan 50
+!
+Interface Ethernet1/0/14
+ switchport access vlan 50
+!
+Interface Ethernet1/0/15
+!
+Interface Ethernet1/0/16
+!
+Interface Ethernet1/0/17
+!
+Interface Ethernet1/0/18
+!
+Interface Ethernet1/0/19
+!
+Interface Ethernet1/0/20
+!
+Interface Ethernet1/0/21
+ switchport access vlan 4000
+!
+Interface Ethernet1/0/22
+ switchport access vlan 1000
+!
+Interface Ethernet1/0/23
+ switchport access vlan 1001
+!
+Interface Ethernet1/0/24
+ description layer 3 tran
+ lldp transmit optional tlv portDesc sysName sysDesc sysCap
+ lldp transmit med tlv capability
+ lldp transmit med tlv networkPolicy
+ lldp transmit med tlv location
+ lldp transmit med tlv extendPoe
+ lldp transmit med tlv inventory
+ switchport access vlan 4094
+!
+Interface Ethernet1/0/25
+!
+Interface Ethernet1/0/26
+!
+Interface Ethernet1/0/27
+ lldp transmit optional tlv portDesc sysName sysDesc sysCap
+ lldp transmit med tlv capability
+ lldp transmit med tlv networkPolicy
+ lldp transmit med tlv location
+ lldp transmit med tlv extendPoe
+ lldp transmit med tlv inventory
+ switchport access vlan 4093
+!
+Interface Ethernet1/0/28
+ lldp transmit optional tlv portDesc sysName sysDesc sysCap
+ lldp transmit med tlv capability
+ lldp transmit med tlv networkPolicy
+ lldp transmit med tlv location
+ lldp transmit med tlv extendPoe
+ lldp transmit med tlv inventory
+ switchport mode trunk
+ switchport trunk allowed vlan 10;20;30;40;50 
+ port-group 1 mode on
+!
+Interface Port-Channel1
+!
+ip vrf CW
+!
+ip vrf Internet
+!
+interface Vlan10
+ ip address 10.40.10.254 255.255.255.0
+!         
+interface Vlan20
+ ipv6 address 2001:10:40:20::254/64
+ ip address 10.40.20.254 255.255.255.0
+!
+interface Vlan30
+ ipv6 address 2001:10:40:30::254/64
+ ip address 10.40.30.254 255.255.255.0
+!
+interface Vlan40
+ ip vrf forwarding CW
+ ip address 10.40.40.254 255.255.255.0
+!
+interface Vlan50
+ ipv6 address 2001:10:40:50::254/64
+ ip address 10.40.50.254 255.255.255.0
+!
+interface Vlan1000
+ ip address 10.40.254.2 255.255.255.252
+!
+interface Vlan1001
+ ip ospf cost 50
+ ip address 10.40.254.10 255.255.255.252
+!
+interface Vlan4000
+ ip vrf forwarding Internet
+ ip address 202.40.100.2 255.255.255.252
+!
+interface Vlan4093
+ ip vrf forwarding CW
+ bandwidth 10m
+ ip address 10.40.254.21 255.255.255.252
+!
+interface Vlan4094
+ mtu 1600
+ ipv6 address 2001:10:40:254::21/127
+ ipv6 router ospf area 0 tag 1
+ ip address 10.40.254.21 255.255.255.252
+!
+interface Loopback1
+ ip address 10.40.255.1 255.255.255.255
+!
+interface Loopback100
+ ip vrf forwarding Internet
+ ip address 202.40.20.20 255.255.255.255
+ ip address 172.40.254.254 255.255.255.255 secondary
+!
+interface Loopback2
+ ipv6 address 2001:10:40:255::7/128
+ ipv6 router ospf area 0 tag 1
+ ip address 10.40.255.7 255.255.255.255
+!
+router ospf 1
+ network 10.40.10.0 0.0.0.255 area 0
+ network 10.40.254.0 0.0.0.3 area 0
+ network 10.40.254.8 0.0.0.3 area 0
+ network 10.40.254.20 0.0.0.3 area 0
+ network 10.40.255.1 0.0.0.0 area 0
+!
+router ipv6 ospf 1
+ router-id 10.40.255.7
+!
+router bgp 62020
+ bgp dampening
+ network 10.40.20.0/24
+ network 10.40.30.0/24
+ network 10.40.50.0/24
+ neighbor 10.40.255.2 remote-as 62020
+ neighbor 10.40.255.2 update-source Loopback1
+ neighbor 10.40.255.2 route-map bgp1 in
+ neighbor 10.40.255.4 remote-as 62020
+ neighbor 10.40.255.4 update-source Loopback1
+ neighbor 2001:10:40:255::8 remote-as 62020
+ neighbor 2001:10:40:255::8 update-source 2001:10:40:255::7
+ no neighbor 2001:10:40:255::8 activate
+ address-family ipv6 unicast
+ network 2001:10:40:20::/64
+ network 2001:10:40:30::/64
+ network 2001:10:40:50::/64
+ neighbor 2001:10:40:255::8 activate
+ exit-address-family
+ address-family ipv4 vrf CW
+ network 10.40.40.0/24
+ neighbor 10.40.254.22 remote-as 62020
+ neighbor 10.40.254.22 update-source 10.40.254.21
+ exit-address-family
+!
+ip route vrf Internet 202.40.21.0/28 202.40.100.1
+!
+route-map bgp1 permit 10
+ match ip address bgp
+ set ip next-hop 10.40.255.2
+ set local-preference 200
+!
+route-map bgp1 permit 20
+!
+!         
+no login
+!
+captive-portal
+!
+end
+

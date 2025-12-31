@@ -1,0 +1,157 @@
+RT-2_config#show run
+Building configuration...
+
+Current configuration:
+!
+hostname RT-2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+isdn switch-type basic-5ess
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+interface GigaEthernet0/0
+ no ip address
+!
+interface GigaEthernet0/1
+ no ip address
+!
+interface GigaEthernet0/2
+ no ip address
+!
+interface GigaEthernet0/2.100
+ ip address 172.40.100.254 255.255.255.0
+ encapsulation dot1Q 100
+ bandwidth 1000000
+ delay 1
+!
+interface GigaEthernet0/2.101
+ ip address 172.40.101.254 255.255.255.0
+ encapsulation dot1Q 101
+ bandwidth 1000000
+ delay 1
+!         
+interface GigaEthernet0/3
+ no ip address
+!
+interface GigaEthernet0/3.20
+ ip address 172.40.20.254 255.255.255.0
+ encapsulation dot1Q 20
+ bandwidth 1000000
+ delay 1
+!
+interface GigaEthernet0/3.30
+ ip address 172.40.30.254 255.255.255.0
+ encapsulation dot1Q 30
+ bandwidth 1000000
+ delay 1
+!
+interface GigaEthernet0/3.50
+ ip address 172.40.50.254 255.255.255.0
+ encapsulation dot1Q 50
+ bandwidth 1000000
+ delay 1
+!
+interface Serial1/0
+ ip address 10.40.254.34 255.255.255.252
+ physical-layer speed 2048000
+!
+interface Serial1/1
+ ip address 10.40.254.30 255.255.255.252
+ physical-layer speed 2048000
+!
+!
+!
+!
+!
+!
+!
+!
+router bgp 62021
+ no synchronization
+ bgp log-neighbor-changes
+ bgp dampening
+ network 172.40.20.0/24
+ network 172.40.30.0/24
+ network 172.40.50.0/24
+ network 172.40.101.0/24
+ neighbor 10.40.254.29 remote-as 62020 
+ neighbor 10.40.254.29 ebgp-multihop 255
+ neighbor 10.40.254.29 route-map fw2 in
+ neighbor 10.40.254.33 remote-as 62020 
+ neighbor 10.40.254.33 ebgp-multihop 255
+ neighbor 10.40.254.33 route-map rl in
+!
+!
+ 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+!
+!
+route-map rl 10 permit
+ match ip address prefix-list rl
+ set local-preference 200
+!
+route-map rl 20 permit
+!
+route-map fw2 10 permit
+ match ip address prefix-list fw2
+ set local-preference 200
+!
+route-map fw2 20 permit
+!
+ip prefix-list fw2 seq 5 permit 10.40.30.0/24
+ip prefix-list fw2 seq 10 permit 10.40.31.0/24
+ip prefix-list rl seq 5 permit 10.40.50.0/24
+ip prefix-list rl seq 10 permit 10.40.51.0/24
+ip prefix-list rl seq 15 permit 10.40.20.0/24
+ip prefix-list rl seq 20 permit 10.40.21.0/24
+ip prefix-list rl seq 25 permit 0.0.0.0/0
+!
+!
+!
+!
+ip dhcpd pool vlan101
+ network 172.40.101.0 255.255.255.0
+ range 172.40.101.10 172.40.101.90
+ default-router 172.40.101.254 
+!
+ip dhcpd enable
+
